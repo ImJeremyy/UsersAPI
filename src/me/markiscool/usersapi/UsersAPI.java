@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,19 +28,26 @@ public class UsersAPI {
 
     public OfflinePlayer getOfflinePlayer(final String username) {
         for(final String uuid : config.getConfigurationSection("users").getKeys(false)) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-            if(offlinePlayer.getName().equalsIgnoreCase(ChatColor.stripColor(username))) return offlinePlayer;
+            final String readUsername = config.getString("users." + uuid + ".username");
+            if(readUsername.equalsIgnoreCase(ChatColor.stripColor(username))) return Bukkit.getOfflinePlayer(UUID.fromString(uuid));
         }
         return null;
     }
 
     public Object getValue(final OfflinePlayer player, String name) {
-        return config.get("users." + player.getUniqueId() + "." + name);
+        return config.get("users." + player.getUniqueId().toString() + "." + name);
     }
 
     public void setValue(final OfflinePlayer player, String name, Object value) {
-        config.set("users." + player.getUniqueId() + ".name", value);
-        saveConfig();
+        config.set("users." + player.getUniqueId().toString() + ".name", value);
+    }
+
+    public boolean isRegistered(final Player player) {
+        return config.contains("users." + player.getUniqueId().toString());
+    }
+
+    public void register(final Player player) {
+        config.set("users." + player.getUniqueId().toString() + ".username", player.getName());
     }
 
     private void createFile() {
