@@ -1,0 +1,14 @@
+name: UsersAPI
+version: 1.0
+main: me.markiscool.usersapi.UsersAPIPlugin
+author: MarkIsCool
+description: Keeps track of users and their values
+commands:
+  usersapireload:
+    aliases: [uapireload, uapir]
+    usage: /<command>
+    description: Must be opped to run this command. Expect up-to-date values when you run this commnad.
+  usersapisetinterval:
+    aliases: [uapiset, uapisetinterval]
+    usage: /<command> <interval>
+    description: Set the interval of saving config. (Higher = Less Lag, more risk) (Lower = More Lag, Less Risk). Find a sweet spot.
